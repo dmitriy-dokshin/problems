@@ -1,6 +1,7 @@
-#include <algorithm>
+#include <bitset>
 #include <functional>
 #include <iostream>
+#include <unordered_set>
 #include <vector>
 
 using namespace std;
@@ -19,6 +20,17 @@ public:
     int Y = 0;
 };
 
+template <>
+struct hash<TPoint> {
+    size_t operator()(const TPoint& p) const {
+        return hash<int>()(p.X) ^ hash<int>()(p.Y);
+    }
+};
+
+bool operator==(const TPoint& p1, const TPoint& p2) {
+    return p1.X == p2.X && p1.Y == p2.Y;
+}
+
 ostream& operator<<(ostream& out, const TPoint& p) {
     out << "{" << p.X << ", " << p.Y << "}";
     return out;
@@ -32,57 +44,44 @@ ostream& operator<<(ostream& out, const vector<T>& v) {
     return out;
 }
 
-bool operator<(const TPoint& p1, const TPoint& p2) {
-    if (p1.Y < p2.Y) {
+int midpoint(const vector<TPoint>& points) {
+    const int* min = nullptr;
+    const int* max = nullptr;
+    for (const auto& p : points) {
+        if (!min) {
+            min = &p.X;
+            max = &p.X;
+        } else {
+            if (p.X < *min) {
+                min = &p.X;
+            }
+            if (p.X > *max) {
+                max = &p.X;
+            }
+        }
+    }
+    return *min + *max;
+}
+
+TPoint reflect(const TPoint& p, const int mid) {
+    return {mid - p.X, p.Y};
+}
+
+bool hasVerticalSymmetryLine(const vector<TPoint>& points) {
+    if (points.empty()) {
         return true;
     }
-    if (p1.Y > p2.Y) {
-        return false;
-    }
-    return p1.X < p2.X;
-}
 
-bool operator==(const TPoint& p1, const TPoint& p2) {
-    return p1.Y == p2.Y && p1.X == p2.X;
-}
-
-bool hasVerticalSymmetryLine(vector<TPoint> points) {
-    sort(points.begin(), points.end());
-
-    for (auto& p : points) {
-        p.X *= 2;
-    }
-
-    int mid = 0;
-    for (size_t i = 0; i < points.size() && points[i].Y == points[0].Y; i++) {
-        mid = (points[i].X + points[0].X) / 2;
-    }
-
-    for (auto& p : points) {
-        p.X -= mid;
-        if (p.X < 0) {
-            p.X = -p.X;
-        }
-    }
-
-    sort(points.begin(), points.end());
-
-    const TPoint* prev = nullptr;
-    bool symmetric = true;
+    const int mid = midpoint(points);
+    const unordered_set<TPoint> pointsSet{points.begin(), points.end()};
     for (const auto& p : points) {
-        if (!symmetric) {
-            if (p == *prev) {
-                symmetric = true;
-            } else {
-                break;
-            }
-        } else if (p.X) {
-            symmetric = false;
+        const TPoint refl = reflect(p, mid);
+        if (pointsSet.find(refl) == pointsSet.end()) {
+            return false;
         }
-        prev = &p;
     }
 
-    return symmetric;
+    return true;
 }
 
 int main() {
