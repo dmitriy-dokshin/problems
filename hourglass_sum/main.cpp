@@ -47,6 +47,8 @@ int hourglassSum(const vector<vector<int>>& arr, const size_t size)
     return maxSum;
 }
 
+// TODO: решить за O(m*n*k) времени, используя O(1) памяти
+// TODO: решить за O(m*n) времени и O(m*n) памяти?
 int main() {
     constexpr size_t k = 3;
 
