@@ -4,6 +4,7 @@
 #include <stdexcept>
 #include <type_traits>
 #include <vector>
+#include <utility>
 
 using namespace std;
 
@@ -172,6 +173,25 @@ T CalculateMaxSum(const vector<TSegment<T>>& queries) {
     return max;
 }
 
+template <class T>
+T CalculateMaxSumOptimal(const vector<TSegment<T>>& queries) {
+    vector<pair<size_t, T>> v;
+    for (const auto& q : queries) {
+        v.emplace_back(q.Begin, q.Value);
+        v.emplace_back(q.End + 1, -q.Value);
+    }
+    sort(v.begin(), v.end(), [](const auto& x1, const auto& x2) { return x1.first < x2.first; });
+    T max = numeric_limits<T>::min();
+    T sum = 0;
+    for (const auto& x : v) {
+        sum += x.second;
+        if (sum > max) {
+            max = sum;
+        }
+    }
+    return max;
+}
+
 int main() {
     vector<vector<int>> queries {
         {2, 6, 8},
@@ -180,4 +200,5 @@ int main() {
         {5, 9, 15}
     };
     cerr << CalculateMaxSum<long>({queries.begin(), queries.end()}) << endl;
+    cerr << CalculateMaxSumOptimal<long>({queries.begin(), queries.end()}) << endl;
 }
