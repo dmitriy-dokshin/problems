@@ -20,7 +20,7 @@ size_t GetHeight(const TNode<T>* node) {
 }
 
 int main() {
-    vector<TNode<int>> v{{1}, {2}, {3}, {4}, {5}, {6}, {7}};
+    vector<TNode<int>> v{{0}, {1}, {2}, {3}, {4}, {5}, {6}};
     v[0].Left = &v[1];
     v[0].Right = &v[2];
     v[1].Left = &v[3];
