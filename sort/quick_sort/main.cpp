@@ -7,12 +7,12 @@ using namespace std;
 template <class T>
 bool operator==(const vector<T>& v1, const vector<T>& v2) {
     if (v1.size() == v2.size()) {
-    	for (size_t i = 0; i < v1.size(); i++) {
-	    if (v1[i] != v2[i]) {
+    for (size_t i = 0; i < v1.size(); i++) {
+    if (v1[i] != v2[i]) {
                 return false;
-	    }
-	}
-	return true;
+    }
+}
+return true;
     }
     return false;
 }
@@ -22,9 +22,9 @@ ostream& operator<<(ostream& out, const vector<T>& v) {
     out << "{";
     if (!v.empty()) {
         out << v[0];
-	for (size_t i = 1; i < v.size(); i++) {
+for (size_t i = 1; i < v.size(); i++) {
             out << ", " << v[i];
-	}
+}
     }
     out << "}";
 }
@@ -44,8 +44,8 @@ void QuickSort(vector<T>& v, size_t from, size_t to) {
     for (size_t i = from; i < to - 1; i++) {
         if (v[i] < v[to - 1]) {
             swap(v[i], v[j]);
-	    j++;
-	}
+    j++;
+}
     }
     swap(v[j], v[to - 1]);
 
@@ -61,15 +61,15 @@ void QuickSort(vector<T>& v) {
 int main() {
     vector<pair<vector<int>, vector<int>>> tests {
         {{5, 2, 3, 1, 4}, {1, 2, 3, 4, 5}},
-	{{1, 10, 5, 2, 7, 4, 3, 8, 9, 6}, {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}}
+{{1, 10, 5, 2, 7, 4, 3, 8, 9, 6}, {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}}
     };
     for (auto& test : tests) {
         QuickSort(test.first);
-	const bool ok = test.first == test.second;
-	cerr << (ok ? "OK" : "ERROR");
-	if (!ok) {
+const bool ok = test.first == test.second;
+cerr << (ok ? "OK" : "ERROR");
+if (!ok) {
             cerr << "\t" << test.first << " != " << test.second;
-	}
-	cerr << endl;
+}
+cerr << endl;
     }
 }
