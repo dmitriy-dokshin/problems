@@ -24,8 +24,8 @@ void Merge(vector<T>& v, size_t begin, size_t middle, size_t end, size_t& swaps)
     while (i < middle && j < end) {
         if (v[j] < v[i]) {
             auto val = std::move(v[j]);
-            for (size_t k = i; k < j; k++) {
-                v[k + 1] = std::move(v[k]);
+            for (size_t k = j; k > i; k--) {
+                v[k] = std::move(v[k - 1]);
             }
             v[i] = std::move(val);
             j++;
@@ -49,7 +49,7 @@ void Sort(vector<T>& v, size_t begin, size_t end, size_t& swaps) {
 }
 
 int main() {
-    vector<int> v {3, 1, 3, 3, 2, 1, 5};
+    vector<int> v {7, 5, 3, 1};
     size_t swaps = 0;
     Sort(v, 0, v.size(), swaps); 
     cerr << v << endl;
