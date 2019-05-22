@@ -36,7 +36,7 @@ void Merge(vector<T>& v, vector<T>& tmp, size_t begin, size_t middle, size_t end
 }
 
 template <class T>
-void MergeSort(vector<T>& v, vector<T> tmp, size_t begin, size_t end) {
+void MergeSort(vector<T>& v, vector<T>& tmp, size_t begin, size_t end) {
     if (end - begin < 2) {
         return;
     }
