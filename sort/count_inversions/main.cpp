@@ -4,6 +4,8 @@
 
 using namespace std;
 
+// see Insertion Sort Advanced Analysis https://www.hackerrank.com/challenges/insertion-sort/problem
+
 template <class T>
 ostream& operator<<(ostream& out, const vector<T>& v) {
     out << "{";
@@ -18,56 +20,53 @@ ostream& operator<<(ostream& out, const vector<T>& v) {
 }
 
 template <class T>
-void Merge(vector<T>& v, vector<T>& tmp, size_t begin, size_t middle, size_t end, size_t& inversions) {
+size_t Merge(vector<T>& v, vector<T>& tmp, size_t begin, size_t middle, size_t end) {
+    size_t inversions = 0;
     size_t i = begin;
     size_t j = middle;
     size_t k = begin;
     while (i < middle && j < end) {
-        if (v[i] <= v[j]) {
-            tmp[k++] = std::move(v[i]);
-            i++;
-        } else {
+        if (v[j] < v[i]) {
+            tmp[k++] = std::move(v[j++]);
             inversions += middle - i;
-            tmp[k++] = std::move(v[j]);
-            j++;
+        } else {
+            tmp[k++] = std::move(v[i++]);
         }
     }
     while (i < middle) {
-        tmp[k++] = std::move(v[i]);
-        i++;
+        tmp[k++] = std::move(v[i++]);
     }
     while (j < end) {
-        tmp[k++] = std::move(v[j]);
-        j++;
+        tmp[k++] = std::move(v[j++]);
     }
     for (k = begin; k < end; k++) {
         v[k] = std::move(tmp[k]);
     }
-    cerr << v << endl;
+    return inversions;
 }
 
 template <class T>
-void Sort(vector<T>& v, vector<T>& tmp, size_t begin, size_t end, size_t& inversions) {
+size_t MergeSort(vector<T>& v, vector<T>& tmp, size_t begin, size_t end) {
     if (end - begin < 2) {
-        return;
+        return 0;
     }
 
+    size_t inversions = 0;
     size_t middle = (begin + end) / 2;
-    Sort(v, tmp, begin, middle, inversions);
-    Sort(v, tmp, middle, end, inversions);
-    Merge(v, tmp, begin, middle, end, inversions);
+    inversions += MergeSort(v, tmp, begin, middle);
+    inversions += MergeSort(v, tmp, middle, end);
+    inversions += Merge(v, tmp, begin, middle, end);
+    return inversions;
 }
 
 template <class T>
-void Sort(vector<T>& v, size_t& inversions) {
+size_t MergeSort(vector<T>& v) {
     vector<T> tmp(v.size());
-    Sort(v, tmp, 0, v.size(), inversions);
+    return MergeSort(v, tmp, 0, v.size());
 }
 
 int main() {
     vector<int> v {2, 1, 3, 1, 2};
-    size_t inversions = 0;
     cerr << v << endl;
-    Sort(v, inversions); 
-    cerr << inversions << endl;
+    cerr << MergeSort(v) << endl; 
 }
