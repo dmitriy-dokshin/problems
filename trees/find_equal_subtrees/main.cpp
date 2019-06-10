@@ -13,22 +13,6 @@ public:
     char Value = 0;
 };
 
-ostream& operator<<(ostream& out, const TNode* node) {
-    out << node->Index;
-    return out;
-}
-
-template <class T>
-ostream& operator<<(ostream& out, const vector<T>& v) {
-    if (!v.empty()) {
-        out << v[0];
-        for (size_t i = 1; i < v.size(); i++) {
-            out << " " << v[i];
-        }
-    }
-    return out;
-}
-
 int FindEqualSubtrees(const TNode* node, unordered_map<int, vector<const TNode*>>& map) {
     int set = 0;
     if (node->Left || node->Right) {
