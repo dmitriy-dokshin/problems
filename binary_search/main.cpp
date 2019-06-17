@@ -31,16 +31,23 @@ size_t UpperBound(const vector<T>& v, const T& val) {
 
     size_t begin = 0;
     size_t end = v.size();
-    while (end - begin > 1) {
-        size_t i = (begin + end) / 2;
+    while (begin < end) {
+        size_t i = begin + (end - begin) / 2;
+        /*
+        if (v[i] <= val) {
+            begin = i + 1;
+        } else {
+            end = i;
+        }
+        */
         if (val < v[i]) {
             end = i;
         } else {
-            begin = i;
+            begin = i + 1;
         }
     }
 
-    return val < v[begin] ? begin : end;
+    return begin;
 }
 
 template <class T>
@@ -51,16 +58,16 @@ size_t LowerBound(const vector<T>& v, const T& val) {
 
     size_t begin = 0;
     size_t end = v.size();
-    while (end - begin > 1) {
-        size_t i = (begin + end) / 2;
+    while (begin < end) {
+        size_t i = begin + (end - begin) / 2;
         if (v[i] < val) {
-            begin = i;
+            begin = i + 1;
         } else {
             end = i;
         }
     }
 
-    return v[begin] < val ? end : begin;
+    return begin;
 }
 
 template <class T>
