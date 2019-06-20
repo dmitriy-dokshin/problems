@@ -1,5 +1,7 @@
 #include <algorithm>
+#include <ctime>
 #include <iostream>
+#include <stdexcept>
 #include <string>
 #include <utility>
 #include <vector>
@@ -47,7 +49,8 @@ vector<size_t> SuffixArray(const string& s) {
         }
 
         for (size_t i = 0; i < suffixes.size(); i++) {
-            suffixes[i].Rank.second = i + k < indexes.size() ? suffixes[indexes[i + k]].Rank.first : 0; 
+            size_t index = suffixes[i].Index;
+            suffixes[i].Rank.second = index + k < indexes.size() ? suffixes[indexes[index + k]].Rank.first : 0; 
         }
     }
 
@@ -61,11 +64,21 @@ vector<size_t> SuffixArray(const string& s) {
 }
 
 int main() {
-    string s = "banana";
+    srand(time(nullptr));
+
+    string s;
+    size_t n = 1000000;
+    for (size_t i = 0; i < n; i++) {
+        s += 'A' + (rand() % ('Z' - 'A' + 1));
+    }
 
     vector<size_t> arr = SuffixArray(s);
 
-    for (const auto& x : arr) {
-        cerr << &s[x] << endl;
+    for (size_t i = 1; i < arr.size(); i++) {
+        if (strcmp(&s[arr[i - 1]], &s[arr[i]]) >= 0) {
+            throw runtime_error("ERROR");
+        }
     }
+
+    cerr << "OK" << endl;
 }
