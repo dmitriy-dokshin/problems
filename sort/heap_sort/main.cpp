@@ -100,6 +100,8 @@ bool IsSorted(const vector<T>& v) {
 }
 
 int main() {
+    srand(time(nullptr));
+
     size_t n = 1000;
     vector<int> v;
     v.reserve(n);
