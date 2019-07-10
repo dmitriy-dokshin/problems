@@ -40,10 +40,10 @@ template <class T>
 const TNode<T>* FindLoop(const TNode<T>* head) {
     const auto* fast = head;
     const auto* slow = head;
-    size_t i = 1;
+    size_t i = 0;
     do {
         fast = fast->Next;
-        if (i % 2 == 0) {
+        if (i % 2 == 1) {
             slow = slow->Next;
         }
         i++;
@@ -51,7 +51,7 @@ const TNode<T>* FindLoop(const TNode<T>* head) {
 
     if (fast) {
         fast = head;
-        if (i % 2 == 0) {
+        if (i % 2 == 1) {
             // WTF???
             slow = slow->Next;
         }
@@ -67,7 +67,7 @@ const TNode<T>* FindLoop(const TNode<T>* head) {
 int main() {
     vector<int> v = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
     for (size_t i = 0; i < v.size(); i++) {
-        auto list = MakeList<int>({0, 1, 2, 3, 4, 5, 6, 7, 8, 9});
+        auto list = MakeList(v);
         list[list.size() - 1].Next = &list[i];
         const auto* loopHead = FindLoop(&list[0]);
         cerr << (loopHead && static_cast<size_t>(loopHead->Value) == i ? "OK" : "ERROR") << endl;
