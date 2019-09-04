@@ -21,7 +21,7 @@ T GCDNaive(T x, T y) {
     return gcd;
 }
 
-// O(log_min(x, y)(max(x, y)))
+// O(log(x*y)
 template <class T>
 T GCDEuclidean(T x, T y) {
     static_assert(std::is_unsigned<T>::value, "Unsigned type required");
