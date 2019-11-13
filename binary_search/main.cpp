@@ -25,48 +25,33 @@ ostream& operator<<(ostream& out, const vector<T>& v) {
 
 template <class T>
 size_t UpperBound(const vector<T>& v, const T& val) {
-    if (v.empty()) {
-        return 0;
-    }
-
+    // Eventually begin points to the first item that is greater than val or to the end
     size_t begin = 0;
     size_t end = v.size();
     while (begin < end) {
-        size_t i = begin + (end - begin) / 2;
-        /*
-        if (v[i] <= val) {
-            begin = i + 1;
+        size_t mid = (begin + end) / 2;
+        if (v[mid] <= val) {
+            begin = mid + 1;
         } else {
-            end = i;
-        }
-        */
-        if (val < v[i]) {
-            end = i;
-        } else {
-            begin = i + 1;
+            end = mid;
         }
     }
-
     return begin;
 }
 
 template <class T>
 size_t LowerBound(const vector<T>& v, const T& val) {
-    if (v.empty()) {
-        return 0;
-    }
-
+    // Eventually begin points to the first item that is greater than or equal to val or to the end
     size_t begin = 0;
     size_t end = v.size();
     while (begin < end) {
-        size_t i = begin + (end - begin) / 2;
-        if (v[i] < val) {
-            begin = i + 1;
+        size_t mid = (begin + end) / 2;
+        if (v[mid] < val) {
+            begin = mid + 1;
         } else {
-            end = i;
+            end = mid;
         }
     }
-
     return begin;
 }
 
