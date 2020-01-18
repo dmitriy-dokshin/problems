@@ -8,9 +8,9 @@
 template <class T>
 class TNode {
 public:
-    T Value;
     std::unique_ptr<TNode> Left;
     std::unique_ptr<TNode> Right;
+    T Value = {};
 };
 
 template <class T>
