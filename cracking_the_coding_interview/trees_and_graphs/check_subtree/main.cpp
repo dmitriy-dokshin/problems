@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <functional>
 #include <iostream>
 #include <memory>
@@ -36,35 +37,41 @@ vector<shared_ptr<TNode<size_t>>> build_tree(const vector<pair<size_t, size_t>>&
 }
 
 template <class T>
-void in_order_traversal(const TNode<T>& node, function<void(const T& value)> visit) {
+size_t post_order_traversal(const TNode<T>& node, function<void(const T& value, const size_t height)> visit) {
+    size_t left_height = 0;
     if (node.Left) {
-        in_order_traversal(*node.Left, visit);
+        left_height = post_order_traversal(*node.Left, visit);
     }
-    visit(node.Value);
+
+    size_t right_height = 0;
     if (node.Right) {
-        in_order_traversal(*node.Right, visit);
+        right_height = post_order_traversal(*node.Right, visit);
     }
+
+    size_t height = max(left_height, right_height) + 1;
+    visit(node.Value, height);
+    return height;
 }
 
 class TBreakException: public exception {
 };
 
 bool check_subtree(const TNode<size_t>& t1, const TNode<size_t>& t2) {
-    vector<size_t> v2;
-    in_order_traversal<size_t>(t2, [&v2](const size_t& value) { v2.emplace_back(value); });
+    vector<pair<size_t, size_t>> v2;
+    post_order_traversal<size_t>(t2, [&v2](const size_t& value, const size_t height) { v2.emplace_back(value, height); });
 
     for (const auto& x : v2) {
-        cerr << " " << x;
+        cerr << " " << x.first;
     }
     cerr << endl;
 
     size_t i = 0;
     try {
-        in_order_traversal<size_t>(t1,
-            [&v2, &i] (const size_t& value) {
+        post_order_traversal<size_t>(t1,
+            [&v2, &i] (const size_t& value, size_t height) {
                 if (i < v2.size()) {
                     cerr << " " << value;
-                    if (v2[i] == value) {
+                    if (v2[i].first == value && v2[i].second == height) {
                         i++;
                     } else {
                         i = 0;
@@ -100,7 +107,6 @@ int main() {
     t2[1]->Value = 5;
     t2[2]->Value = 6;
     t2[3]->Value = 7;
-
     cerr << check_subtree(*t1[0], *t2[0]) << endl;
 
     vector<pair<size_t, size_t>> v3;
@@ -109,6 +115,21 @@ int main() {
     auto t3 = build_tree(v3);
     t3[0]->Value = 2;
     t3[1]->Value = 8;
-
     cerr << check_subtree(*t1[0], *t3[0]) << endl;
+
+    vector<pair<size_t, size_t>> v4;
+    v4.resize(2);
+    v4[0] = {0, 1};
+    auto t4 = build_tree(v4);
+    t4[0]->Value = 4;
+    t4[1]->Value = 6;
+    cerr << check_subtree(*t1[0], *t4[0]) << endl;
+
+    vector<pair<size_t, size_t>> v5;
+    v5.resize(2);
+    v5[0] = {0, 1};
+    auto t5 = build_tree(v5);
+    t5[0]->Value = 6;
+    t5[1]->Value = 7;
+    cerr << check_subtree(*t1[0], *t5[0]) << endl;
 }
