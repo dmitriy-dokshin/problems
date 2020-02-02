@@ -2,6 +2,8 @@
 #include <iostream>
 #include <memory>
 #include <random>
+#include <unordered_map>
+#include <vector>
 
 using namespace std;
 
@@ -99,6 +101,25 @@ void traverse(const TNode<T>& node, function<void(const TNode<T>&)> f) {
     }
 }
 
+template <class T>
+void count_paths_with_sum_optimal(const TNode<T>& node, const T target_sum, size_t& count, unordered_map<T, size_t>& sums, T sum = 0) {
+    sum += node.Value;
+    sums[sum]++;
+    if (sum == target_sum || sums.find(sum - target_sum) != sums.end()) {
+        count++;
+    }
+    
+    if (node.Left) {
+        count_paths_with_sum_optimal(*node.Left, target_sum, count, sums, sum);
+    }
+
+    if (node.Right) {
+        count_paths_with_sum_optimal(*node.Right, target_sum, count, sums, sum);
+    }
+
+    sums[sum]--;
+}
+
 int main() {
     vector<shared_ptr<TNode<int>>> nodes;
 
@@ -147,9 +168,12 @@ int main() {
     int target_sum;
     cin >> target_sum;
 
-    {
-        size_t count = 0;
-        traverse<int>(*nodes[0], [target_sum, &count](const auto& node) { return count_paths_with_sum(node, target_sum, count); });
-        cerr << count << endl;
-    }
+    size_t count = 0;
+    /*
+    traverse<int>(*nodes[0], [target_sum, &count](const auto& node) { return count_paths_with_sum(node, target_sum, count); });
+    */
+    unordered_map<int, size_t> sums;
+    count_paths_with_sum_optimal(*nodes[0], target_sum, count, sums);
+    cerr << count << endl;
+
 }
