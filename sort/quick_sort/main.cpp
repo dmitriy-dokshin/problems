@@ -27,6 +27,7 @@ ostream& operator<<(ostream& out, const vector<T>& v) {
         }
     }
     out << "}";
+    return out;
 }
 
 size_t SelectPivot(size_t from, size_t to) {
@@ -34,11 +35,7 @@ size_t SelectPivot(size_t from, size_t to) {
 }
 
 template <class T>
-void QuickSort(vector<T>& v, size_t from, size_t to) {
-    if (from == to) {
-        return;
-    }
-
+pair<size_t, size_t> Partition2(vector<T>& v, size_t from, size_t to) {
     swap(v[SelectPivot(from, to)], v[to - 1]);
     size_t j = from; 
     for (size_t i = from; i < to - 1; i++) {
@@ -48,9 +45,36 @@ void QuickSort(vector<T>& v, size_t from, size_t to) {
         }
     }
     swap(v[j], v[to - 1]);
+    return {j, j + 1};
+}
 
-    QuickSort(v, from, j);
-    QuickSort(v, j + 1, to);
+template <class T>
+pair<size_t, size_t> Partition3(vector<T>& v, size_t from, size_t to) {
+    auto val = v[SelectPivot(from, to)];
+    size_t i = 0;
+    while (from + i < to) {
+        if (v[from + i] < val) {
+            swap(v[from + i], v[from]);
+            from++;
+        } else if (v[from + i] > val) {
+            swap(v[from + i], v[to - 1]);
+            to--;
+        } else {
+            i++;
+        }
+    }
+    return {from, to};
+}
+
+template <class T>
+void QuickSort(vector<T>& v, size_t from, size_t to) {
+    if (from == to) {
+        return;
+    }
+
+    auto res = Partition2(v, from, to);
+    QuickSort(v, from, res.first);
+    QuickSort(v, res.second, to);
 }
 
 template <class T>
