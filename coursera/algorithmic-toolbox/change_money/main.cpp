@@ -26,10 +26,6 @@ size_t change_money(const vector<T>& coins, const T target) {
                 result[t] = result[t] > 0 ? min(result[t], count) : count;
             }
         }
-
-        if (result[t] == 0) {
-            result[t] = result[t - 1];
-        }
     }
 
     return result[target];
