@@ -6,22 +6,38 @@
 using namespace std;
 
 template <class T>
-vector<T> compute_optimal_points(vector<pair<T, T>> segments) {
-    sort(segments.begin(), segments.end(), [](const auto& s1, const auto& s2) { return s1.first < s2.second; });
+class TSegment {
+public:
+    TSegment() = default;
+
+    TSegment(T begin, T end)
+        : Begin(begin)
+        , End(end)
+    {
+    }
+
+    T Begin = {};
+    T End = {};
+};
+
+template <class T>
+vector<T> compute_optimal_points(vector<TSegment<T>> segments) {
+    sort(segments.begin(), segments.end(), [](const auto& s1, const auto& s2) { return s1.Begin < s2.End; });
 
     vector<T> result;
-    T max_begin = segments[0].first;
-    T min_end = segments[0].second;
+    T max_begin = segments[0].Begin;
+    T min_end = segments[0].End;
     for (size_t i = 1; i < segments.size(); i++) {
         const auto& x = segments[i];
-        if (x.first > min_end) {
+
+        if (x.Begin > min_end) {
             result.emplace_back(max_begin);
-            min_end = x.second;
-        } else if (x.second < min_end) {
-            min_end = x.second;
+            min_end = x.End;
+        } else if (x.End < min_end) {
+            min_end = x.End;
         }
 
-        max_begin = x.first;
+        max_begin = x.Begin;
     }
 
     result.emplace_back(max_begin);
@@ -30,7 +46,7 @@ vector<T> compute_optimal_points(vector<pair<T, T>> segments) {
 }
 
 int main() {
-    vector<pair<vector<pair<int, int>>, size_t>> tests {
+    vector<pair<vector<TSegment<int>>, size_t>> tests {
         {{{1, 3}, {2, 5}, {3, 6}}, 1},
         {{{4, 7}, {1, 3}, {2, 5}, {5, 6}}, 2},
         {{{0, 2}, {1, 9}, {6, 12}, {4, 8}}, 2}
