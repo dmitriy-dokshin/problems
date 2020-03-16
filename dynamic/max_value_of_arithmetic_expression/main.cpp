@@ -9,7 +9,7 @@ using namespace std;
 
 enum EOperationType {
     OT_Add = 0,
-    OT_Subtruct = 1,
+    OT_Subtract = 1,
     OT_Multiply = 2
 };
 
@@ -18,7 +18,7 @@ ostream& operator<<(ostream& out, const EOperationType op) {
         case OT_Add:
             out << '+';
             break;
-        case OT_Subtruct:
+        case OT_Subtract:
             out << '-';
             break;
         case OT_Multiply:
@@ -36,7 +36,7 @@ bool try_parse_op(const char c, EOperationType& op) {
             op = OT_Add;
             break;
         case '-':
-            op = OT_Subtruct;
+            op = OT_Subtract;
             break;
         case '*':
             op = OT_Multiply;
@@ -59,7 +59,7 @@ TMinMax<T> calculate_min_max(const TMinMax<T>& x, const TMinMax<T>& y, const EOp
     switch (op) {
         case OT_Add:
             return {x.Min + y.Min, x.Max + y.Max};
-        case OT_Subtruct:
+        case OT_Subtract:
             return {x.Min - y.Max, x.Max - y.Min};
         case OT_Multiply:
             return {
