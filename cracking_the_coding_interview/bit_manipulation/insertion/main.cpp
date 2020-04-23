@@ -5,7 +5,9 @@ using namespace std;
 template <class T>
 ostream& print(ostream& out, const T& value) {
     for (size_t i = sizeof(value) * 8; i > 0; i--) {
-        bool bit = value & (1 << (i - 1));
+        T mask = 1;
+        mask <<= (i - 1);
+        bool bit = value & mask;
         out << bit;
     }
     return out;
