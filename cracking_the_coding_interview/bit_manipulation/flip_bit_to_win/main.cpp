@@ -39,7 +39,7 @@ size_t flip_bit_to_win(const T& x) {
 }
 
 int main() {
-    unsigned long x;
+    unsigned int x;
     cin >> x;
     print(cerr, x) << endl;
 
