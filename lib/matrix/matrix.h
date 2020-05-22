@@ -8,10 +8,10 @@
 template <class T>
 class TMatrix {
 public:
-    TMatrix(const size_t w, const size_t h)
+    TMatrix(const size_t w, const size_t h, const T& default_value = {})
         : W_(w)
         , H_(h)
-        , Data_(w * h)
+        , Data_(w * h, default_value)
     {
     }
 

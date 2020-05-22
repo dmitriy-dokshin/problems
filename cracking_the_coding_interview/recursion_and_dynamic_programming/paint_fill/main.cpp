@@ -1,4 +1,4 @@
-#include "matrix.h"
+#include <lib/matrix/matrix.h>
 
 template <class T>
 void paint_fill(TMatrix<T>& matrix, size_t i, size_t j, T original_value, T target_value) {

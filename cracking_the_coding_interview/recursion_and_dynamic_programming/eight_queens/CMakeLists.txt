@@ -1,22 +1,22 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(paint_fill)
+project(eight_queens)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 add_executable(
-    paint_fill
+    eight_queens
     main.cpp
 )
 
 set_target_properties(
-    paint_fill
+    eight_queens
     PROPERTIES
     OUTPUT_NAME a.out
 )
 
 target_include_directories(
-    paint_fill
+    eight_queens
     PUBLIC $ENV{PROBLEMS_ROOT_DIR}
 )
