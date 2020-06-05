@@ -24,11 +24,11 @@ private:
 };
 
 template <class T, class TComp = less<T>>
-class TLessOptional {
+class TCompOptional {
 public:
     using value_type = T;
 
-    TLessOptional(TComp comp = {})
+    TCompOptional(TComp comp = {})
         : Comp_(move(comp))
     {
     }
@@ -54,7 +54,7 @@ size_t get_size(const TListy<T>& listy) {
         size *= 2;
     }
 
-    size = find_bound<TLessOptional<T>>(listy, nullopt, 0, size);
+    size = find_bound<TCompOptional<T>>(listy, nullopt, 0, size);
     return size;
 }
 
@@ -62,8 +62,8 @@ template <class T>
 pair<size_t, size_t> binary_search(const TListy<T>& listy, const optional<T>& value) {
     size_t size = get_size(listy);
     return {
-        find_bound<TLessOptional<T>>(listy, value, 0, size),
-        find_bound<TLessOptional<T, less_equal<T>>>(listy, value, 0, size)
+        find_bound<TCompOptional<T>>(listy, value, 0, size),
+        find_bound<TCompOptional<T, less_equal<T>>>(listy, value, 0, size)
     };
 }
 
