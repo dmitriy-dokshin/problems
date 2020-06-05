@@ -2,14 +2,14 @@
 #include <utility>
 #include <vector>
 
-template <class T, class TComp>
-size_t find_bound(const std::vector<T>& v, const T& value, size_t begin, size_t end, TComp comp = {}) {
+template <class TComp, class TCont, class TValue>
+size_t find_bound(const TCont& v, const TValue& value, size_t begin, size_t end, TComp comp = {}) {
     if (begin < end) {
         size_t mid = begin + (end - begin) / 2;
         if (comp(v[mid], value)) {
-            return find_bound(v, value, mid + 1, end, comp);
+            return find_bound(v, value, mid + 1, end, move(comp));
         } else {
-            return find_bound(v, value, begin, mid, comp);
+            return find_bound(v, value, begin, mid, move(comp));
         }
     } else {
         return begin;
@@ -18,12 +18,12 @@ size_t find_bound(const std::vector<T>& v, const T& value, size_t begin, size_t 
 
 template <class T>
 size_t lower_bound(const std::vector<T>& v, const T& value) {
-    return find_bound<T, std::less<T>>(v, value, 0, v.size());
+    return find_bound<std::less<T>>(v, value, 0, v.size());
 }
 
 template <class T>
 size_t upper_bound(const std::vector<T>& v, const T& value) {
-    return find_bound<T, std::less_equal<T>>(v, value, 0, v.size());
+    return find_bound<std::less_equal<T>>(v, value, 0, v.size());
 }
 
 template <class T>
