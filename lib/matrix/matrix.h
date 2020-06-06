@@ -55,22 +55,39 @@ TMatrix<T> random_matrix(size_t w, size_t h, T min_value, T max_value, std::mt19
     return matrix;
 }
 
+class TPrintParams {
+public:
+    std::string Delim = " ";
+    bool PrintIndexes = false;
+};
+
 template <class T>
-std::ostream& operator<<(std::ostream& out, const TMatrix<T>& matrix) {
-    static const std::string VALUE_SEPARATOR = " ";
+std::ostream& print(std::ostream& out, const TMatrix<T>& matrix, const TPrintParams& params = {}) {
     if (!matrix.empty()) {
-        out << "\\" << VALUE_SEPARATOR << 0;
-        for (size_t j = 1; j < matrix.width(); j++) {
-            out << VALUE_SEPARATOR << j;
-        }
-        out << std::endl;
-        for (size_t i = 0; i < matrix.height(); i++) {
-            out << i << VALUE_SEPARATOR << matrix.at(i, 0);
+        if (params.PrintIndexes) {
+            out << "\\" << params.Delim << 0;
             for (size_t j = 1; j < matrix.width(); j++) {
-                out << VALUE_SEPARATOR << matrix.at(i, j);
+                out << params.Delim << j;
+            }
+            out << std::endl;
+        }
+        for (size_t i = 0; i < matrix.height(); i++) {
+            if (params.PrintIndexes) {
+                out << i << params.Delim;
+            }
+            out << matrix.at(i, 0);
+            for (size_t j = 1; j < matrix.width(); j++) {
+                out << params.Delim << matrix.at(i, j);
             }
             out << std::endl;
         }
     }
     return out;
+}
+
+template <class T>
+std::ostream& operator<<(std::ostream& out, const TMatrix<T>& matrix) {
+    TPrintParams params;
+    params.PrintIndexes = true;
+    return print(out, matrix, params);
 }
