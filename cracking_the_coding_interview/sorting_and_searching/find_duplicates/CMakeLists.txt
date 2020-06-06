@@ -1,22 +1,22 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(sort_big_file)
+project(find_duplicates)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 add_executable(
-    sort_big_file
+    find_duplicates
     main.cpp
 )
 
 set_target_properties(
-    sort_big_file
+    find_duplicates
     PROPERTIES
     OUTPUT_NAME a.out
 )
 
 target_include_directories(
-    sort_big_file
+    find_duplicates
     PUBLIC $ENV{PROBLEMS_ROOT_DIR}
 )
