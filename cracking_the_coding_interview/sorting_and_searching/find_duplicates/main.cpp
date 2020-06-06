@@ -93,7 +93,7 @@ int main() {
     size_t v_size = (max_value - min_value + 1) * 2;
     
     random_device rd;
-    auto v = TRandom<unsigned int>::random_vector(v_size, min_value, max_value, rd(), /*debug=*/{true});
+    auto v = TRandom<unsigned int>::random_vector(v_size, min_value, max_value, rd());
 
     if (find_dups(v, min_value, max_value, max_memory) != find_dups_naive(v)) {
         cerr << "Error" << endl;
