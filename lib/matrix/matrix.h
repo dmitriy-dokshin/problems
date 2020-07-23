@@ -3,6 +3,7 @@
 #include <iostream>
 #include <random>
 #include <string>
+#include <utility>
 #include <vector>
 
 template <class T>
@@ -21,6 +22,14 @@ public:
 
     T& at(size_t i, size_t j) {
         return Data_.at(i * W_ + j);
+    }
+
+    const T& at(const std::pair<size_t, size_t>& p) const {
+        return this->at(p.first, p.second);
+    }
+
+    T& at(const std::pair<size_t, size_t>& p) {
+        return this->at(p.first, p.second);
     }
 
     size_t width() const {
