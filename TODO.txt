@@ -1,0 +1,4 @@
+design/email_storage_service/README.md
+google/max_value/README.md
+google/submatrix_sum/README.md
+yandex/count_user_events/README.md
