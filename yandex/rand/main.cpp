@@ -1,7 +1,9 @@
+#include <algorithm>
 #include <cstdlib>
 #include <functional>
 #include <iostream>
-#include <map>
+#include <unordered_map>
+#include <vector>
 
 using namespace std;
 
@@ -34,11 +36,14 @@ int rand29() {
 }
 
 int main() {
-    map<int, size_t> counts;
-    for (size_t i = 0; i < 2000000; i++) {
+    unordered_map<int, size_t> counts;
+    for (size_t i = 0; i < 5 * 1000 * 1000; i++) {
         counts[rand29()]++;
     }
-    for (const auto& x : counts) {
+
+    vector<pair<int, size_t>> counts_v(counts.begin(), counts.end());
+    sort(counts_v.begin(), counts_v.end());
+    for (const auto& x : counts_v) {
         cerr << x.first << "\t" << x.second << endl;
     }
 }
