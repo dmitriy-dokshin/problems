@@ -29,17 +29,14 @@ public:
     }
 
     static std::vector<T> random_vector_unique(const size_t size, const T min_val, const T max_val, const std::mt19937_64::result_type seed) {
-        size_t n = max_val - min_val + 1;
-        auto mask = TRandom<bool>::random_vector(n, 0, 1, seed);
         std::vector<T> result;
-        result.reserve(size);
-        for (size_t x = 0; x < mask.size() && result.size() < size; x++) {
-            if (mask[x]) {
-                result.emplace_back(min_val + x);
-            }
+        result.reserve(max_val - min_val + 1);
+        for (T x = min_val; x <= max_val; x++) {
+            result.emplace_back(x);
         }
-        std::mt19937_64 shuffle_gen(seed + 1);
+        std::mt19937_64 shuffle_gen(seed);
         std::shuffle(result.begin(), result.end(), shuffle_gen);
+        result.resize(size);
         return result;
     }
 };
